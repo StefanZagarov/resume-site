@@ -968,6 +968,14 @@ kbd {
   gap: var(--gap);
 }
 
+/* The diploma gets its own row, centred above the ten certificates */
+.cert.diploma {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 230px;
+}
+
 .cert {
   /* Opaque like the skill tiles: 11 frosted cards over the canvas would be expensive */
   backdrop-filter: none;
