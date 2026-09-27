@@ -21,13 +21,18 @@ export function subscribePointer(listener: () => void) {
 
 let started = false
 
+// Phones and tablets: there is no cursor to follow, so the effects would only cost battery
+export const touchOnly = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches
+
 // One global listener: updates the pointer and the border-glow position of nearby tiles
 export function startPointerTracking() {
-  if (started) return
+  if (started || touchOnly()) return
   started = true
 
   let frame = 0
   let lastEvent: PointerEvent | null = null
+  // Set when the page scrolled under a still cursor: the tile under it has to be looked up again
+  let scrolled = false
   let lit = new Set<HTMLElement>()
 
   const apply = () => {
@@ -37,7 +42,9 @@ export function startPointerTracking() {
     const { clientX: x, clientY: y } = e
     pointer.x = x
     pointer.y = y
-    pointer.hovered = (e.target as Element | null)?.closest?.<HTMLElement>('.tile') ?? null
+    const under = scrolled ? document.elementFromPoint(x, y) : (e.target as Element | null)
+    scrolled = false
+    pointer.hovered = under?.closest?.<HTMLElement>('.tile') ?? null
 
     // Read phase: measure every tile before writing anything, so the style writes
     // below can't force a recalculation per tile (layout thrashing)
@@ -71,7 +78,26 @@ export function startPointerTracking() {
     lastEvent = e
     if (!frame) frame = requestAnimationFrame(apply)
   })
+  // Tiles move under a still cursor while scrolling; keep their glow on the cursor.
+  // Once scrolling stops, aim once more: a card that just came under the cursor lifts on
+  // :hover (0.3 s), which moves it after the last scroll frame.
+  let settle = 0
+  const reaim = () => {
+    if (!lastEvent) return
+    scrolled = true
+    if (!frame) frame = requestAnimationFrame(apply)
+  }
+  window.addEventListener(
+    'scroll',
+    () => {
+      reaim()
+      clearTimeout(settle)
+      settle = window.setTimeout(reaim, 350)
+    },
+    { passive: true },
+  )
   document.addEventListener('pointerleave', () => {
+    lastEvent = null
     pointer.x = pointer.y = -9999
     pointer.hovered = null
     for (const listener of listeners) listener()

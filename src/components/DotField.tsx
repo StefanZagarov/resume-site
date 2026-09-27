@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { pointer, subscribePointer } from '../hooks/usePointer'
+import { pointer, subscribePointer, touchOnly } from '../hooks/usePointer'
 
 const SPACING = 22
 const RADIUS = 120 // how far the cursor affects dots
@@ -38,7 +38,7 @@ export function DotField() {
   useEffect(() => {
     const canvas = canvasRef.current!
     const ctx = canvas.getContext('2d')!
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches || touchOnly()
     let palette = readPalette()
     let width = 0
     let height = 0

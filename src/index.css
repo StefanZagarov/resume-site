@@ -1178,6 +1178,7 @@ kbd {
   border-top: 1px solid var(--line);
   background: var(--tile);
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   padding: 36px 20px 28px;
 }
 

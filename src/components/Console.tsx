@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { profile } from '../data/content'
 import { copyText } from '../utils/copyText'
 
@@ -11,10 +11,12 @@ type ConsoleProps = {
 // Drop-down "terminal" under the nav with clickable quick-access commands
 export function Console({ open, onClose, onToggleTheme }: ConsoleProps) {
   const [feedback, setFeedback] = useState<string | null>(null)
+  const timer = useRef(0)
 
   const flash = (message: string) => {
     setFeedback(message)
-    setTimeout(() => setFeedback(null), 2000)
+    clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => setFeedback(null), 2000)
   }
 
   const copyEmail = async () => {

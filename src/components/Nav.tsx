@@ -28,7 +28,7 @@ export function Nav() {
   const [consoleOpen, setConsoleOpen] = useState(false)
   const headerRef = useRef<HTMLElement>(null)
   const linksRef = useRef<HTMLUListElement>(null)
-  const now = useNow(15_000)
+  const now = useNow(60_000)
   useKeyboardNav(IDS)
   useReservedWidth(linksRef, '(max-width: 1200px)')
 

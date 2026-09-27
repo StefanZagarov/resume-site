@@ -1,5 +1,5 @@
 import { Check, Copy, Mail, MapPin, Phone, User } from 'lucide-react'
-import { useState, type CSSProperties } from 'react'
+import { useRef, useState, type CSSProperties } from 'react'
 import { GithubIcon } from '../components/GithubIcon'
 import { Section } from '../components/Section'
 import { profile } from '../data/content'
@@ -7,11 +7,13 @@ import { copyText } from '../utils/copyText'
 
 export function Contact() {
   const [copied, setCopied] = useState(false)
+  const timer = useRef(0)
 
   const copyEmail = async () => {
     if (await copyText(profile.email)) {
       setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      clearTimeout(timer.current)
+      timer.current = window.setTimeout(() => setCopied(false), 2000)
     } else {
       // Clipboard can be blocked; fall back to opening the mail client
       window.location.href = `mailto:${profile.email}`
