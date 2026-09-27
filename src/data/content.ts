@@ -2,7 +2,6 @@ export type Project = {
   title: string
   description: string
   checklist: string[]
-  period: string
   repo?: string
   live?: string
   image?: string
@@ -41,8 +40,8 @@ export const profile = {
 
 export const about = {
   text: [
-    "I'm a front-end developer building AI-powered web applications with React and TypeScript. At work I develop front-ends for AI products — chat assistants, voice tutoring, document analysis — and take them from design to production.",
-    'I started out building tools for a 3D architectural modeling app in C# and Unity, then retrained as a front-end developer at SoftUni. I care about clean architecture, tested code and interfaces that feel good to use.',
+    "I'm a junior front-end developer with more than a year of professional experience building web applications with React and TypeScript. I enjoy digging into a challenge, understanding it properly and finding a clean solution, whether that's a plugin system, a real-time interface or a stubborn layout bug.",
+    "I started out building tools for a 3D architectural modeling app in C# and Unity, then retrained as a front-end developer at SoftUni. I care about readable code that runs well and interfaces that feel good to use, and I'm always looking for the next thing to learn.",
   ],
 }
 
@@ -80,41 +79,36 @@ export const skills: Skill[] = [
 
 export const workProjects: Project[] = [
   {
-    title: 'AI Learning Platform',
-    description: 'Learning platform for schools with voice tutoring and AI-generated exams that teachers can assign and review.',
-    checklist: ['React / TypeScript', 'Speech-to-text & text-to-speech', 'KaTeX math rendering', 'PDF export', 'Vitest'],
-    period: '12/2025 – now',
-    image: '/projects/ai-learning-platform.webp',
-    live: 'https://app.amacoach.ai',
-  },
-  {
     title: 'Modular SaaS Platform',
     description: 'Platform where features and external APIs plug in as plugins, with switchable themes and layouts.',
     checklist: ['React / TypeScript', 'Plugin architecture', 'Theme & layout systems', 'Zod validation', 'Unit tests'],
-    period: '04/2025 – 02/2026',
     image: '/projects/modular-saas-platform.webp',
     live: 'https://app.craftgenie.ai',
   },
   {
+    title: 'AI Learning Platform',
+    description: 'School platform for teachers, students and parents, where students learn with an AI tutor trained on their course materials.',
+    checklist: ['React / TypeScript', 'Exam generator & assignment', 'Geometry figure generator', 'Textbook-to-lesson roadmaps', 'Real-time voice tutoring'],
+    image: '/projects/ai-learning-platform.webp',
+    live: 'https://app.amacoach.ai',
+  },
+  {
     title: 'AI Legal Assistant',
     description: 'Legal research chat that streams answers and shows the cited legal provisions beside the conversation.',
-    checklist: ['React / TypeScript', 'WebSockets streaming', 'Design system', 'Tailwind CSS'],
-    period: '07/2026 – 08/2026',
+    checklist: ['React / TypeScript', 'Answers streamed over WebSockets', 'Clickable citations to legal texts', 'Chat history', 'Per-answer cost tracking'],
     image: '/projects/ai-legal-assistant.webp',
     live: 'https://law.semantif.ai',
   },
   {
     title: 'AI Document Assistant',
-    description: 'AI chat over uploaded PDF, Word and Excel files, with the documents viewable in the browser.',
-    checklist: ['React / TypeScript', 'PDF, Word & Excel viewers', 'Session reconnection', 'Markdown responses'],
-    period: '12/2025',
+    description: 'AI assistant that reads through your uploaded PDF, Word and Excel files and answers questions about them, with the documents open beside the chat.',
+    checklist: ['React / TypeScript', 'Real-time chat over WebSockets', 'PDF, Word & Excel viewers', 'Lazy loading for large PDFs'],
     image: '/projects/ai-document-assistant.webp',
   },
   {
-    title: 'Insect Trap Analysis',
-    description: 'Image recognition app for monitoring pest traps: upload, analysis results, reports and PDF export.',
-    checklist: ['React / TypeScript', 'shadcn/ui', 'Token-refresh auth', 'Reports dashboard', 'PDF export'],
-    period: '06/2026 – 07/2026',
+    title: 'AI Insect Trap Analysis',
+    description: 'Pest monitoring app: upload a photo of a trap and the AI identifies and counts the insects by species, with every report kept for tracking over time.',
+    checklist: ['React / TypeScript', 'AI detection results by species', 'Re-run analysis with instructions', 'Reports dashboard with filters'],
     image: '/projects/insect-trap-analysis.webp',
     live: 'https://pestscan.ai',
   },
@@ -123,25 +117,22 @@ export const workProjects: Project[] = [
 export const personalProjects: Project[] = [
   {
     title: 'Questline',
-    description: 'Gamified goal tracker: build quest maps, track objectives and discover public questlines.',
-    checklist: ['Python / Django', 'JavaScript', 'Draggable quest maps', 'Progression engine'],
-    period: '2026',
+    description: 'Gamified goal tracker: build roadmaps toward your goals, track progress and discover roadmaps shared by others.',
+    checklist: ['Python / Django', 'JavaScript', 'Publishable roadmaps', 'Progression engine'],
     repo: 'https://github.com/StefanZagarov/questline',
     image: '/projects/questline.webp',
   },
   {
     title: 'Natal Chart',
     description: 'Interactive astrology chart: drag the sky and wind the clock to cast a chart for any time and place.',
-    checklist: ['React 19 / TypeScript', 'WebAssembly', 'Swiss Ephemeris', 'Tailwind CSS'],
-    period: '2026',
+    checklist: ['React 19 / TypeScript', 'Swiss Ephemeris (WebAssembly)', 'Tauri', 'Tailwind CSS'],
     repo: 'https://github.com/StefanZagarov/chart-generator',
     image: '/projects/natal-chart.webp',
   },
   {
     title: 'DevDesk',
     description: 'Knowledge storage app that keeps every tool and piece of information in one place.',
-    checklist: ['TypeScript monorepo', 'Express', 'PostgreSQL', 'Docker', 'JWT auth'],
-    period: '2026',
+    checklist: ['TypeScript monorepo', 'Shared Zod schemas', 'React / shadcn/ui', 'Express / PostgreSQL'],
     repo: 'https://github.com/StefanZagarov/DevDesk',
     image: '/projects/devdesk.webp',
   },
@@ -149,7 +140,6 @@ export const personalProjects: Project[] = [
     title: 'Hyprtimer',
     description: 'Desktop timer app with clock modes, persistent storage and extensive customization.',
     checklist: ['Electron Forge', 'JavaScript', 'Persistent storage'],
-    period: '2025',
     repo: 'https://github.com/StefanZagarov/hyprtimer',
     image: '/projects/hyprtimer.webp',
   },
@@ -157,7 +147,6 @@ export const personalProjects: Project[] = [
     title: 'The Drunken Dragon',
     description: 'Fantasy storytelling platform for posting, reading and managing RPG stories.',
     checklist: ['React', 'JWT authentication', 'Role-based users'],
-    period: '2025',
     repo: 'https://github.com/StefanZagarov/the-drunken-dragon',
     image: '/projects/the-drunken-dragon.webp',
   },
@@ -165,7 +154,6 @@ export const personalProjects: Project[] = [
     title: 'Distortion Pit',
     description: 'Music community app to add bands and songs, like and comment on them, and see them ranked by likes.',
     checklist: ['Angular 18 (standalone)', 'Node.js / Express', 'MongoDB / Mongoose', 'JWT authentication'],
-    period: '2024',
     repo: 'https://github.com/StefanZagarov/distortion-pit',
     image: '/projects/distortion-pit.webp',
   },
@@ -258,24 +246,25 @@ export const workExperience: ExperienceCard[] = [
     title: 'IT Application Developer',
     org: 'Semantif.AI',
     period: '04/2025 – Present',
-    description: 'Developing front-ends for AI-powered web products, from an internal SaaS platform to client applications.',
-    checklist: ['AI chat assistants', 'Voice tutoring', 'Plugin architecture', 'Design to production', 'Unit testing'],
+    description: 'Developing front-ends for web products, from an internal SaaS platform to client applications.',
+    checklist: ['AI chat assistants', 'Real-time streaming over WebSockets', 'Plugin architecture', 'Client apps from mockup to release', 'Unit testing'],
     link: 'https://semantif.ai/',
-  },
-  {
-    title: 'Software Developer — Unity',
-    org: 'BIMExperts',
-    period: '06/2022 – 11/2022',
-    description: 'Developed user-facing features for a 3D architectural modeling application using C# and Unity.',
-    checklist: ['Object placement system', 'Blueprint snapshots', 'Messaging & logging UI'],
-    link: 'https://bimexperts.com/en',
   },
   {
     title: 'Warehouse Operations',
     org: 'Denicom',
     period: '10/2023 – 04/2025',
     description: 'Order fulfillment for chain stores and individual clients, and inventory management.',
-    checklist: ['Order fulfillment', 'Inventory management'],
+    checklist: ['Order picking & palletizing', 'Shipments for chain stores & clients', 'Inventory checks & stock management'],
+    link: 'https://denicom.bg/',
+  },
+  {
+    title: 'Software Developer — Unity Engine',
+    org: 'BIMExperts',
+    period: '06/2022 – 11/2022',
+    description: 'Developed features for a 3D building documentation app in C# and Unity, and built small Unity games.',
+    checklist: ['Item inventory system', 'World placement system', 'Blueprint snapshots', 'Notification & logging system', 'Jenga-style & infinite runner games'],
+    link: 'https://bimexperts.com/en',
   },
 ]
 

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { useInView } from '../hooks/useInView'
 
 type SectionProps = {
@@ -17,8 +17,13 @@ export function Section({ id, title, subtitle, children }: SectionProps) {
     <section id={id} ref={ref} className="section">
       <div className={inView ? 'popin in' : 'popin'}>
         <header className="section-head">
-          <h2>{title}</h2>
-          <p className="section-sub"># {subtitle}</p>
+          <h2 className="reveal" style={{ '--i': -3 } as CSSProperties}>
+            {title}
+          </h2>
+          <p className="section-sub reveal" style={{ '--i': -2 } as CSSProperties}>
+            {'// '}
+            {subtitle}
+          </p>
         </header>
         {children}
       </div>

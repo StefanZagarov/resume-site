@@ -1,5 +1,5 @@
 import { Check, Copy, Mail, MapPin, Phone, User } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { GithubIcon } from '../components/GithubIcon'
 import { Section } from '../components/Section'
 import { profile } from '../data/content'
@@ -19,9 +19,9 @@ export function Contact() {
   }
 
   return (
-    <Section id="contact" title="Contact Me" subtitle="get in touch">
+    <Section id="contact" title="Contact Me" subtitle="say hi, I don't bite">
       <div className="contact-info">
-        <div className="contact-item">
+        <div className="contact-item reveal" style={{ '--i': 0 } as CSSProperties}>
           <span className="contact-icon">
             <User size={26} className="accent" />
           </span>
@@ -30,7 +30,7 @@ export function Contact() {
             <span>{profile.name}</span>
           </div>
         </div>
-        <div className="contact-item">
+        <div className="contact-item reveal" style={{ '--i': 1 } as CSSProperties}>
           <span className="contact-icon">
             <MapPin size={26} className="accent" />
           </span>
@@ -39,7 +39,7 @@ export function Contact() {
             <span>{profile.location}</span>
           </div>
         </div>
-        <div className="contact-item">
+        <div className="contact-item reveal" style={{ '--i': 2 } as CSSProperties}>
           <span className="contact-icon">
             <Phone size={26} className="accent" />
           </span>
@@ -48,7 +48,7 @@ export function Contact() {
             <a href={`tel:${profile.phone.replace(/\s/g, '')}`}>{profile.phone}</a>
           </div>
         </div>
-        <div className="contact-item">
+        <div className="contact-item reveal" style={{ '--i': 3 } as CSSProperties}>
           <span className="contact-icon">
             <Mail size={26} className="accent" />
           </span>
@@ -64,7 +64,7 @@ export function Contact() {
         </div>
       </div>
 
-      <div className="socials">
+      <div className="socials reveal" style={{ '--i': 4 } as CSSProperties}>
         <a href={profile.github} target="_blank" rel="noreferrer" className="social" aria-label="GitHub">
           <GithubIcon size={22} />
         </a>

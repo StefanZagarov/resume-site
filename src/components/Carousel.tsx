@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { useState, type CSSProperties, type ReactNode } from 'react'
 import { useVisibleCount } from '../hooks/useVisibleCount'
 
 type CarouselProps<T> = {
@@ -26,8 +26,13 @@ export function Carousel<T>({ items, getKey, renderItem }: CarouselProps<T>) {
           {items.map((item, index) => (
             <div
               key={getKey(item)}
-              className="carousel-slot"
-              style={{ flexBasis: `calc((100% - (${visible} - 1) * var(--gap)) / ${visible})` }}
+              className="carousel-slot reveal"
+              style={
+                {
+                  flexBasis: `calc((100% - (${visible} - 1) * var(--gap)) / ${visible})`,
+                  '--i': index,
+                } as CSSProperties
+              }
               aria-hidden={index < clampedStart || index >= clampedStart + visible}
             >
               {renderItem(item)}
@@ -36,7 +41,7 @@ export function Carousel<T>({ items, getKey, renderItem }: CarouselProps<T>) {
         </div>
       </div>
       {canScroll && (
-        <div className="carousel-controls">
+        <div className="carousel-controls reveal" style={{ '--i': visible } as CSSProperties}>
           <button
             type="button"
             className="round-btn"

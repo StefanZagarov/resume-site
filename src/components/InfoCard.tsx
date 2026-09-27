@@ -1,4 +1,3 @@
-import { Check } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Tile } from './Tile'
 
@@ -24,8 +23,8 @@ export function InfoCard({ title, meta, media, description, checklist, actions }
         <ul className="checklist">
           {checklist.map((item) => (
             <li key={item}>
+              <span className="check-mark accent" aria-hidden="true">❯</span>
               <span>{item}</span>
-              <Check size={16} className="accent" />
             </li>
           ))}
         </ul>

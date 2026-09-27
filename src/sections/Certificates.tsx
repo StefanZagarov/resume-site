@@ -1,14 +1,20 @@
 import { ArrowUpRight } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { Section } from '../components/Section'
 import { Tile } from '../components/Tile'
 import { certificates } from '../data/content'
 
 export function Certificates() {
   return (
-    <Section id="certificates" title="Certificates" subtitle="find my certificates">
+    <Section id="certificates" title="Certificates" subtitle="proof I did my homework">
       <ul className="cert-grid">
-        {certificates.map((cert) => (
-          <Tile key={cert.link} as="li" className={cert.kind === 'Diploma' ? 'cert diploma' : 'cert'}>
+        {certificates.map((cert, index) => (
+          <Tile
+            key={cert.link}
+            as="li"
+            className={cert.kind === 'Diploma' ? 'cert diploma reveal' : 'cert reveal'}
+            style={{ '--i': index } as CSSProperties}
+          >
             <a href={cert.link} target="_blank" rel="noreferrer" className="cert-media" aria-label={`View ${cert.title} ${cert.kind.toLowerCase()}`}>
               <img src={cert.image} alt="" width={560} height={806} loading="lazy" decoding="async" />
             </a>

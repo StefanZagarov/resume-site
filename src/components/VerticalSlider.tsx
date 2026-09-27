@@ -72,8 +72,8 @@ export function VerticalSlider<T>({ items, getKey, renderItem, label }: Vertical
             aria-hidden={rowIndex !== line}
             inert={rowIndex !== line}
           >
-            {row.map((item) => (
-              <div key={getKey(item)} className="vslider-card">
+            {row.map((item, index) => (
+              <div key={getKey(item)} className="vslider-card reveal" style={{ '--i': index } as CSSProperties}>
                 {renderItem(item)}
               </div>
             ))}
@@ -82,7 +82,7 @@ export function VerticalSlider<T>({ items, getKey, renderItem, label }: Vertical
       </div>
 
       {rows.length > 1 && (
-        <div className="vslider-rail">
+        <div className="vslider-rail reveal" style={{ '--i': perRow } as CSSProperties}>
           <button type="button" className="round-btn" onClick={() => goTo(line - 1)} disabled={line === 0} aria-label="Previous row">
             <ChevronUp size={18} />
           </button>
