@@ -12,7 +12,7 @@ export function Hero() {
       <h1 className="stagger" style={{ '--i': 1 } as CSSProperties}>
         {profile.firstName} {profile.lastName}
       </h1>
-      <p className="hero-role stagger" style={{ '--i': 2 } as CSSProperties}>I'm a {profile.role}. Welcome to my portfolio!</p>
+      <p className="hero-role stagger" style={{ '--i': 2 } as CSSProperties}>I'm a {profile.role.toLowerCase()}, come take a look around!</p>
       <div className="hero-actions stagger" style={{ '--i': 3 } as CSSProperties}>
         <a href={profile.cv} download className="btn btn-primary">
           Download CV <Download size={15} />
