@@ -13,7 +13,11 @@ type Tab = (typeof TABS)[number]
 function ProjectMedia({ project }: { project: Project }) {
   return (
     <div className="project-media" aria-hidden="true">
-      {project.image ? <img src={project.image} alt="" /> : <span>{project.title.slice(0, 1)}</span>}
+      {project.image ? (
+        <img src={project.image} alt="" width={1200} height={675} loading="lazy" decoding="async" />
+      ) : (
+        <span>{project.title.slice(0, 1)}</span>
+      )}
     </div>
   )
 }

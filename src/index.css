@@ -65,7 +65,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 88px;
 }
 
 body {
@@ -632,7 +631,11 @@ kbd {
    Sections
    ========================================================================== */
 .section {
-  padding-top: 130px;
+  --section-pad: 130px;
+  padding-top: var(--section-pad);
+  /* Jumps (nav links, 1–7 keys) land with the heading just below the sticky nav,
+     instead of the section's empty top padding */
+  scroll-margin-top: calc(96px - var(--section-pad));
 }
 
 .section-head {
@@ -1220,7 +1223,7 @@ kbd {
   }
 
   .section {
-    padding-top: 96px;
+    --section-pad: 96px;
   }
 
   .console.open {

@@ -84,30 +84,39 @@ export const workProjects: Project[] = [
     description: 'Learning platform for schools with voice tutoring and AI-generated exams that teachers can assign and review.',
     checklist: ['React / TypeScript', 'Speech-to-text & text-to-speech', 'KaTeX math rendering', 'PDF export', 'Vitest'],
     period: '12/2025 – now',
+    image: '/projects/ai-learning-platform.webp',
+    live: 'https://app.amacoach.ai',
   },
   {
     title: 'Modular SaaS Platform',
     description: 'Platform where features and external APIs plug in as plugins, with switchable themes and layouts.',
     checklist: ['React / TypeScript', 'Plugin architecture', 'Theme & layout systems', 'Zod validation', 'Unit tests'],
     period: '04/2025 – 02/2026',
+    image: '/projects/modular-saas-platform.webp',
+    live: 'https://app.craftgenie.ai',
   },
   {
     title: 'AI Legal Assistant',
     description: 'Legal research chat that streams answers and shows the cited legal provisions beside the conversation.',
     checklist: ['React / TypeScript', 'WebSockets streaming', 'Design system', 'Tailwind CSS'],
     period: '07/2026 – 08/2026',
+    image: '/projects/ai-legal-assistant.webp',
+    live: 'https://law.semantif.ai',
   },
   {
     title: 'AI Document Assistant',
     description: 'AI chat over uploaded PDF, Word and Excel files, with the documents viewable in the browser.',
     checklist: ['React / TypeScript', 'PDF, Word & Excel viewers', 'Session reconnection', 'Markdown responses'],
     period: '12/2025',
+    image: '/projects/ai-document-assistant.webp',
   },
   {
     title: 'Insect Trap Analysis',
     description: 'Image recognition app for monitoring pest traps: upload, analysis results, reports and PDF export.',
     checklist: ['React / TypeScript', 'shadcn/ui', 'Token-refresh auth', 'Reports dashboard', 'PDF export'],
     period: '06/2026 – 07/2026',
+    image: '/projects/insect-trap-analysis.webp',
+    live: 'https://pestscan.ai',
   },
 ]
 
@@ -118,6 +127,7 @@ export const personalProjects: Project[] = [
     checklist: ['Python / Django', 'JavaScript', 'Draggable quest maps', 'Progression engine'],
     period: '2026',
     repo: 'https://github.com/StefanZagarov/questline',
+    image: '/projects/questline.webp',
   },
   {
     title: 'Natal Chart',
@@ -125,6 +135,7 @@ export const personalProjects: Project[] = [
     checklist: ['React 19 / TypeScript', 'WebAssembly', 'Swiss Ephemeris', 'Tailwind CSS'],
     period: '2026',
     repo: 'https://github.com/StefanZagarov/chart-generator',
+    image: '/projects/natal-chart.webp',
   },
   {
     title: 'DevDesk',
@@ -132,6 +143,7 @@ export const personalProjects: Project[] = [
     checklist: ['TypeScript monorepo', 'Express', 'PostgreSQL', 'Docker', 'JWT auth'],
     period: '2026',
     repo: 'https://github.com/StefanZagarov/DevDesk',
+    image: '/projects/devdesk.webp',
   },
   {
     title: 'Hyprtimer',
@@ -139,6 +151,7 @@ export const personalProjects: Project[] = [
     checklist: ['Electron Forge', 'JavaScript', 'Persistent storage'],
     period: '2025',
     repo: 'https://github.com/StefanZagarov/hyprtimer',
+    image: '/projects/hyprtimer.webp',
   },
   {
     title: 'The Drunken Dragon',
@@ -146,6 +159,15 @@ export const personalProjects: Project[] = [
     checklist: ['React', 'JWT authentication', 'Role-based users'],
     period: '2025',
     repo: 'https://github.com/StefanZagarov/the-drunken-dragon',
+    image: '/projects/the-drunken-dragon.webp',
+  },
+  {
+    title: 'Distortion Pit',
+    description: 'Music community app to add bands and songs, like and comment on them, and see them ranked by likes.',
+    checklist: ['Angular 18 (standalone)', 'Node.js / Express', 'MongoDB / Mongoose', 'JWT authentication'],
+    period: '2024',
+    repo: 'https://github.com/StefanZagarov/distortion-pit',
+    image: '/projects/distortion-pit.webp',
   },
 ]
 

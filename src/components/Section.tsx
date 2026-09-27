@@ -8,16 +8,20 @@ type SectionProps = {
   children: ReactNode
 }
 
-// Sections "pop in" like a Hyprland window opening the first time they scroll into view
+// Sections "pop in" like a Hyprland window opening the first time they scroll into view.
+// The animation runs on an inner wrapper so the <section> itself is never transformed —
+// jumps (nav links, 1–7 keys) then aim at its real position, not the scaled one.
 export function Section({ id, title, subtitle, children }: SectionProps) {
   const { ref, inView } = useInView<HTMLElement>()
   return (
-    <section id={id} ref={ref} className={inView ? 'section popin in' : 'section popin'}>
-      <header className="section-head">
-        <h2>{title}</h2>
-        <p className="section-sub"># {subtitle}</p>
-      </header>
-      {children}
+    <section id={id} ref={ref} className="section">
+      <div className={inView ? 'popin in' : 'popin'}>
+        <header className="section-head">
+          <h2>{title}</h2>
+          <p className="section-sub"># {subtitle}</p>
+        </header>
+        {children}
+      </div>
     </section>
   )
 }
