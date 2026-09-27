@@ -34,6 +34,7 @@ export function Carousel<T>({ items, getKey, renderItem }: CarouselProps<T>) {
                 } as CSSProperties
               }
               aria-hidden={index < clampedStart || index >= clampedStart + visible}
+              inert={index < clampedStart || index >= clampedStart + visible}
             >
               {renderItem(item)}
             </div>

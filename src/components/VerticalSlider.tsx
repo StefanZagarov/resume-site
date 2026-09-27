@@ -10,8 +10,9 @@ type VerticalSliderProps<T> = {
 }
 
 // Cards are grouped into rows ("lines"); the viewport shows one line at a time.
-// A rail on the right (up / dots / down) moves between lines. The viewport itself
-// doesn't capture the mouse wheel, so scrolling the page is never hijacked.
+// A rail on the right (up / dots / down) moves between lines by sliding a track with a
+// transform (GPU-composited, same easing as the carousel). The viewport doesn't capture
+// the mouse wheel, so scrolling the page is never hijacked.
 export function VerticalSlider<T>({ items, getKey, renderItem, label }: VerticalSliderProps<T>) {
   const perRow = useVisibleCount()
   const rows: T[][] = []
@@ -40,20 +41,7 @@ export function VerticalSlider<T>({ items, getKey, renderItem, label }: Vertical
     return () => observer.disconnect()
   }, [perRow, items])
 
-  // Keep the current line aligned when the line height or the number of lines changes
-  // (not when the line itself changes — that's the smooth scroll in goTo)
-  const lineRef = useRef(line)
-  lineRef.current = line
-  useLayoutEffect(() => {
-    const viewport = viewportRef.current
-    if (viewport && rowHeight) viewport.scrollTop = lineRef.current * rowHeight
-  }, [rowHeight, rows.length])
-
-  const goTo = (index: number) => {
-    const target = Math.max(0, Math.min(rows.length - 1, index))
-    setCurrent(target)
-    viewportRef.current?.scrollTo({ top: target * rowHeight, behavior: 'smooth' })
-  }
+  const goTo = (index: number) => setCurrent(Math.max(0, Math.min(rows.length - 1, index)))
 
   return (
     <div className={rows.length > 1 ? 'vslider' : 'vslider single'}>
@@ -64,21 +52,23 @@ export function VerticalSlider<T>({ items, getKey, renderItem, label }: Vertical
         role="region"
         aria-label={`${label}, row ${line + 1} of ${rows.length}`}
       >
-        {rows.map((row, rowIndex) => (
-          <div
-            key={row.map(getKey).join('|')}
-            className="vslider-row"
-            style={{ gridTemplateColumns: `repeat(${perRow}, minmax(0, 1fr))` }}
-            aria-hidden={rowIndex !== line}
-            inert={rowIndex !== line}
-          >
-            {row.map((item, index) => (
-              <div key={getKey(item)} className="vslider-card reveal" style={{ '--i': index } as CSSProperties}>
-                {renderItem(item)}
-              </div>
-            ))}
-          </div>
-        ))}
+        <div className="vslider-track" style={{ transform: `translateY(${-line * rowHeight}px)` }}>
+          {rows.map((row, rowIndex) => (
+            <div
+              key={row.map(getKey).join('|')}
+              className="vslider-row"
+              style={{ gridTemplateColumns: `repeat(${perRow}, minmax(0, 1fr))` }}
+              aria-hidden={rowIndex !== line}
+              inert={rowIndex !== line}
+            >
+              {row.map((item, index) => (
+                <div key={getKey(item)} className="vslider-card reveal" style={{ '--i': index } as CSSProperties}>
+                  {renderItem(item)}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       {rows.length > 1 && (

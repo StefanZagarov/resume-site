@@ -1,32 +1,27 @@
-# React + TypeScript + Vite
+# Stefan Zagarov — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Personal portfolio and CV site: **https://resume-site-29ou.onrender.com/**
 
-Currently, two official plugins are available:
+A single-page site with a terminal / Hyprland-inspired look: a shell prompt that tracks the current section, workspace-style navigation (keys `1`–`7`), a quick-access console (`` ` ``), terminal-style tabs and an interactive dot-grid background.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+- React 19 + TypeScript
+- Vite
+- Plain CSS with design tokens (dark and light themes)
+- lucide-react icons
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Develop
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # type-check + production build into dist/
+npm run lint     # oxlint
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+All content (about text, skills, projects, certificates, experience) lives in `src/data/content.ts`.
+
+## Deploy
+
+Deployed on Render as a static site: build command `npm ci && npm run build`, publish directory `dist`, `NODE_VERSION=22`.

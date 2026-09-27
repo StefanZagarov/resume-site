@@ -35,7 +35,10 @@ export function Nav() {
   // ` toggles the console (like a game console), Esc closes it, clicking outside closes it
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === '`' && !isTyping(e.target)) {
+      // e.code is the physical key, so this also works on layouts where it types another
+      // character (e.g. Bulgarian)
+      const backquote = e.code === 'Backquote' || e.key === '`'
+      if (backquote && !isTyping(e.target)) {
         e.preventDefault()
         setConsoleOpen((open) => !open)
       }

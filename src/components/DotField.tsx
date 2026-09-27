@@ -7,6 +7,16 @@ const PUSH = 9 // max px a dot is pushed away
 const BACKLIGHT_RADIUS = 110
 
 type Palette = { dot: string; dotAlpha: number; glow: string }
+type Rect = { x: number; y: number; w: number; h: number }
+
+// Smallest rect holding both (either may be missing)
+function union(a: Rect | null, b: Rect | null): Rect | null {
+  if (!a) return b
+  if (!b) return a
+  const x = Math.min(a.x, b.x)
+  const y = Math.min(a.y, b.y)
+  return { x, y, w: Math.max(a.x + a.w, b.x + b.w) - x, h: Math.max(a.y + a.h, b.y + b.h) - y }
+}
 
 function readPalette(): Palette {
   const cs = getComputedStyle(document.documentElement)
@@ -20,7 +30,8 @@ function readPalette(): Palette {
 // Fixed full-screen dot grid: dots near the cursor light up and move away,
 // and a soft light shows through the frosted tile under the cursor.
 // Draws on demand only (pointer move, fade-out, scroll, resize, theme) — never
-// on an idle loop, so the frosted tiles above it don't have to re-blur every frame.
+// on an idle loop, so the frosted tiles above it don't have to re-blur every frame —
+// and only repaints the part of the screen that changed.
 export function DotField() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -39,6 +50,11 @@ export function DotField() {
     const base = document.createElement('canvas')
     const baseCtx = base.getContext('2d')!
 
+    // Area that differs from the plain grid after the last draw (cursor square + backlight).
+    // Each frame repaints only that area and the new one, not the whole screen.
+    let dirty: Rect | null = null
+    let fullRedraw = true
+
     const renderBase = () => {
       base.width = canvas.width
       base.height = canvas.height
@@ -53,6 +69,7 @@ export function DotField() {
         }
       }
       baseCtx.fill()
+      fullRedraw = true
     }
 
     const resize = () => {
@@ -66,41 +83,68 @@ export function DotField() {
       draw()
     }
 
+    // Snap a rect outwards to whole device pixels and clamp it to the screen, so clearing
+    // and re-blitting it never leaves half-covered pixels at its edges
+    const snap = (r: Rect): Rect | null => {
+      const dpr = canvas.width / width
+      const x0 = Math.max(0, Math.floor((r.x - 2) * dpr) / dpr)
+      const y0 = Math.max(0, Math.floor((r.y - 2) * dpr) / dpr)
+      const x1 = Math.min(width, Math.ceil((r.x + r.w + 2) * dpr) / dpr)
+      const y1 = Math.min(height, Math.ceil((r.y + r.h + 2) * dpr) / dpr)
+      return x1 > x0 && y1 > y0 ? { x: x0, y: y0, w: x1 - x0, h: y1 - y0 } : null
+    }
+
     const draw = () => {
-      ctx.clearRect(0, 0, width, height)
       const { x: mx, y: my, hovered } = pointer
 
       // Backlight behind the hovered tile, clipped to that tile
       backlight += ((hovered ? 1 : 0) - backlight) * 0.12
-      if (!reduceMotion && hovered && backlight > 0.01) {
-        const r = hovered.getBoundingClientRect()
+      const tile = !reduceMotion && hovered && backlight > 0.01 ? hovered.getBoundingClientRect() : null
+      const light: Rect | null = tile ? { x: tile.left, y: tile.top, w: tile.width, h: tile.height } : null
+
+      // Square around the cursor that holds every dot it can affect
+      const active = !reduceMotion && mx > -RADIUS && my > -RADIUS && mx < width + RADIUS && my < height + RADIUS
+      const reach = RADIUS + PUSH + 2
+      const x0 = mx - reach
+      const y0 = my - reach
+      const square: Rect | null = active ? { x: x0, y: y0, w: reach * 2, h: reach * 2 } : null
+
+      const next = union(square, light)
+      const target = fullRedraw ? { x: 0, y: 0, w: width, h: height } : union(dirty, next)
+      fullRedraw = false
+      dirty = next
+      const region = target && snap(target)
+      if (!region) return
+
+      ctx.save()
+      ctx.beginPath()
+      ctx.rect(region.x, region.y, region.w, region.h)
+      ctx.clip()
+      ctx.clearRect(region.x, region.y, region.w, region.h)
+
+      if (light) {
         ctx.save()
         ctx.beginPath()
-        ctx.rect(r.left, r.top, r.width, r.height)
+        ctx.rect(light.x, light.y, light.w, light.h)
         ctx.clip()
         const g = ctx.createRadialGradient(mx, my, 0, mx, my, BACKLIGHT_RADIUS)
         g.addColorStop(0, `rgba(${palette.glow},${0.16 * backlight})`)
         g.addColorStop(1, `rgba(${palette.glow},0)`)
         ctx.fillStyle = g
-        ctx.fillRect(r.left, r.top, r.width, r.height)
+        ctx.fillRect(light.x, light.y, light.w, light.h)
         ctx.restore()
       }
 
-      const active = !reduceMotion && mx > -RADIUS && my > -RADIUS && mx < width + RADIUS && my < height + RADIUS
-      if (!active) {
+      if (!square) {
         ctx.drawImage(base, 0, 0, width, height)
+        ctx.restore()
         return
       }
-
-      // Square around the cursor that holds every dot it can affect
-      const reach = RADIUS + PUSH + 2
-      const x0 = mx - reach
-      const y0 = my - reach
 
       // Blit the prerendered grid everywhere except that square (even-odd clip)
       ctx.save()
       ctx.beginPath()
-      ctx.rect(0, 0, width, height)
+      ctx.rect(region.x, region.y, region.w, region.h)
       ctx.rect(x0, y0, reach * 2, reach * 2)
       ctx.clip('evenodd')
       ctx.drawImage(base, 0, 0, width, height)
@@ -122,6 +166,7 @@ export function DotField() {
           ctx.fill()
         }
       }
+      ctx.restore()
     }
 
     const tick = () => {

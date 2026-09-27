@@ -43,6 +43,9 @@
   --mono: 'JetBrains Mono', ui-monospace, monospace;
   /* Hyprland's default animation curve: bezier = myBezier, 0.05, 0.9, 0.1, 1.05 */
   --hypr-ease: cubic-bezier(0.05, 0.9, 0.1, 1.05);
+  /* Sliding cards: gentle start, soft stop (the Hyprland curve jumps a third of the way
+     in the first frame, which reads as a stutter on long slides) */
+  --slide-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Animatable angle for the rotating border (Hyprland's `borderangle` animation) */
@@ -185,6 +188,10 @@ img {
   animation: borderangle 8s linear infinite;
 }
 
+.window.paused::after {
+  animation-play-state: paused;
+}
+
 @keyframes borderangle {
   to {
     --angle: 405deg;
@@ -194,12 +201,6 @@ img {
 /* ==========================================================================
    Shared controls
    ========================================================================== */
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -614,6 +615,13 @@ kbd {
   color: var(--muted);
 }
 
+/* Keyboard shortcuts mean nothing on touch screens (phones, tablets) */
+@media (hover: none) and (pointer: coarse) {
+  .key-hint {
+    display: none;
+  }
+}
+
 .scroll-cue {
   position: absolute;
   bottom: 24px;
@@ -725,6 +733,33 @@ kbd {
   background: var(--tile);
 }
 
+/* Desktop: centre the photo on the terminal alone, not on terminal + Download button */
+@media (min-width: 1201px) {
+  .about {
+    row-gap: 20px;
+  }
+
+  .about-main {
+    display: contents;
+  }
+
+  .about-main .terminal {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .about-main > .btn {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .about-photo {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
 .about-photo img {
   width: 100%;
   height: 100%;
@@ -829,6 +864,13 @@ kbd {
   box-shadow: inset 0 2px 0 var(--accent);
 }
 
+/* The frame is solid, so blurring what's behind its cards changes nothing on screen —
+   it only makes the GPU re-blur every card on every frame of a slide */
+.tab-frame .tile {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 .tab-frame {
   padding: 20px;
   border: 1px solid var(--line);
@@ -861,7 +903,7 @@ kbd {
 .carousel-track {
   display: flex;
   gap: var(--gap);
-  transition: transform 0.6s var(--hypr-ease);
+  transition: transform 0.55s var(--slide-ease);
 }
 
 .carousel-slot {
@@ -1350,6 +1392,10 @@ kbd {
   overflow: hidden;
   margin: -8px -4px;
   border-radius: var(--radius);
+}
+
+.vslider-track {
+  transition: transform 0.55s var(--slide-ease);
 }
 
 .vslider-row {

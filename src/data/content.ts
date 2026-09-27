@@ -34,7 +34,7 @@ export const profile = {
   email: 'stefan.zagarov@gmail.com',
   phone: '+359 87 793 5040',
   github: 'https://github.com/StefanZagarov',
-  photo: '/photo.jpg',
+  photo: '/photo.webp',
   cv: '/Stefan_Zagarov_CV.pdf',
 }
 

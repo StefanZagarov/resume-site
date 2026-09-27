@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { scrollBehavior } from '../utils/motion'
 
 // Number keys 1–9 jump to the matching section, like switching workspaces
 export function useKeyboardNav(ids: string[]) {
@@ -9,7 +10,7 @@ export function useKeyboardNav(ids: string[]) {
       if (target.closest('input, textarea, select, [contenteditable="true"]')) return
       const index = Number(e.key) - 1
       if (!Number.isInteger(index) || index < 0 || index >= ids.length) return
-      document.getElementById(ids[index])?.scrollIntoView({ behavior: 'smooth' })
+      document.getElementById(ids[index])?.scrollIntoView({ behavior: scrollBehavior() })
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
