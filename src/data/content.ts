@@ -19,9 +19,10 @@ export type ExperienceCard = {
 
 export type Certificate = {
   title: string
-  issuer: string
+  kind: 'Diploma' | 'Certificate'
+  issued: string
   link: string
-  image?: string
+  image: string
 }
 
 export const profile = {
@@ -45,35 +46,36 @@ export const about = {
   ],
 }
 
-// Logos live in /public/icons as static SVGs (multi-colour brand marks).
+// Logos live in /public/icons as static files (multi-colour brand marks; Linux is a PNG
+// because its full-colour Tux SVG is ~190 KB).
 // `darkInvert` flips black logos to white on the dark theme so they stay visible.
 export type Skill = { name: string; icon: string; darkInvert?: boolean }
 
 export const skills: Skill[] = [
-  { name: 'React', icon: 'react' },
-  { name: 'TypeScript', icon: 'typescript' },
-  { name: 'JavaScript', icon: 'javascript' },
-  { name: 'HTML', icon: 'html5' },
-  { name: 'CSS', icon: 'css3' },
-  { name: 'Tailwind CSS', icon: 'tailwindcss' },
-  { name: 'shadcn/ui', icon: 'shadcnui', darkInvert: true },
-  { name: 'Zod', icon: 'zod' },
-  { name: 'Angular', icon: 'angular' },
-  { name: 'Vitest', icon: 'vitest' },
-  { name: 'Node.js', icon: 'nodejs' },
-  { name: 'Express', icon: 'express', darkInvert: true },
-  { name: 'Python', icon: 'python' },
-  { name: 'Django', icon: 'django' },
-  { name: 'PostgreSQL', icon: 'postgresql' },
-  { name: 'MongoDB', icon: 'mongodb' },
-  { name: 'Docker', icon: 'docker' },
-  { name: 'Git', icon: 'git' },
-  { name: 'GitHub', icon: 'github', darkInvert: true },
-  { name: 'GitLab', icon: 'gitlab' },
-  { name: 'Vite', icon: 'vitejs' },
-  { name: 'Linux', icon: 'linux' },
-  { name: 'Unity', icon: 'unity', darkInvert: true },
-  { name: 'ElevenLabs', icon: 'elevenlabs', darkInvert: true },
+  { name: 'React', icon: 'react.svg' },
+  { name: 'TypeScript', icon: 'typescript.svg' },
+  { name: 'JavaScript', icon: 'javascript.svg' },
+  { name: 'HTML', icon: 'html5.svg' },
+  { name: 'CSS', icon: 'css3.svg' },
+  { name: 'Tailwind CSS', icon: 'tailwindcss.svg' },
+  { name: 'shadcn/ui', icon: 'shadcnui.svg', darkInvert: true },
+  { name: 'Zod', icon: 'zod.svg' },
+  { name: 'Angular', icon: 'angular.svg' },
+  { name: 'Vitest', icon: 'vitest.svg' },
+  { name: 'Node.js', icon: 'nodejs.svg' },
+  { name: 'Express', icon: 'express.svg', darkInvert: true },
+  { name: 'Python', icon: 'python.svg' },
+  { name: 'Django', icon: 'django.svg' },
+  { name: 'PostgreSQL', icon: 'postgresql.svg' },
+  { name: 'MongoDB', icon: 'mongodb.svg' },
+  { name: 'Docker', icon: 'docker.svg' },
+  { name: 'Git', icon: 'git.svg' },
+  { name: 'GitHub', icon: 'github.svg', darkInvert: true },
+  { name: 'GitLab', icon: 'gitlab.svg' },
+  { name: 'Vite', icon: 'vitejs.svg' },
+  { name: 'Linux', icon: 'linux.png' },
+  { name: 'Unity', icon: 'unity.svg', darkInvert: true },
+  { name: 'ElevenLabs', icon: 'elevenlabs.svg', darkInvert: true },
 ]
 
 export const workProjects: Project[] = [
@@ -147,11 +149,85 @@ export const personalProjects: Project[] = [
   },
 ]
 
+// All SoftUni certificates, newest first (diploma on top). Images are the first page of
+// each certificate, exported from SoftUni's public certificate pages.
 export const certificates: Certificate[] = [
   {
-    title: 'Front-End Developer With JavaScript',
-    issuer: 'Software University',
+    title: 'Front-End Developer with JavaScript',
+    kind: 'Diploma',
+    issued: '07/2025',
     link: 'https://softuni.bg/certificates/details/246809/30023660',
+    image: '/certificates/front-end-diploma.webp',
+  },
+  {
+    title: 'Containers and Cloud',
+    kind: 'Certificate',
+    issued: '08/2025',
+    link: 'https://softuni.bg/certificates/details/249593/57e62521',
+    image: '/certificates/containers-cloud.webp',
+  },
+  {
+    title: 'Software Engineering and DevOps',
+    kind: 'Certificate',
+    issued: '07/2025',
+    link: 'https://softuni.bg/certificates/details/246090/f5ef142f',
+    image: '/certificates/software-engineering-devops.webp',
+  },
+  {
+    title: 'ReactJS',
+    kind: 'Certificate',
+    issued: '04/2025',
+    link: 'https://softuni.bg/certificates/details/241609/52ffffd5',
+    image: '/certificates/reactjs.webp',
+  },
+  {
+    title: 'HTML & CSS',
+    kind: 'Certificate',
+    issued: '02/2025',
+    link: 'https://softuni.bg/certificates/details/237877/ba426bd0',
+    image: '/certificates/html-css.webp',
+  },
+  {
+    title: 'Angular',
+    kind: 'Certificate',
+    issued: '12/2024',
+    link: 'https://softuni.bg/certificates/details/232502/2f9a5e2d',
+    image: '/certificates/angular.webp',
+  },
+  {
+    title: 'JS Back-End',
+    kind: 'Certificate',
+    issued: '10/2024',
+    link: 'https://softuni.bg/certificates/details/228419/fa7e910e',
+    image: '/certificates/js-back-end.webp',
+  },
+  {
+    title: 'JS Applications',
+    kind: 'Certificate',
+    issued: '08/2024',
+    link: 'https://softuni.bg/certificates/details/223199/1c9ee287',
+    image: '/certificates/js-applications.webp',
+  },
+  {
+    title: 'JS Advanced',
+    kind: 'Certificate',
+    issued: '06/2024',
+    link: 'https://softuni.bg/certificates/details/217716/b626bc68',
+    image: '/certificates/js-advanced.webp',
+  },
+  {
+    title: 'Programming Fundamentals with JavaScript',
+    kind: 'Certificate',
+    issued: '04/2024',
+    link: 'https://softuni.bg/certificates/details/209645/38d5e5fe',
+    image: '/certificates/programming-fundamentals.webp',
+  },
+  {
+    title: 'Programming Basics',
+    kind: 'Certificate',
+    issued: '10/2023',
+    link: 'https://softuni.bg/certificates/details/186898/7de3d3dc',
+    image: '/certificates/programming-basics.webp',
   },
 ]
 
@@ -186,8 +262,8 @@ export const educationExperience: ExperienceCard[] = [
     title: 'Front-End Developer',
     org: 'Software University',
     period: '09/2023 – 07/2025',
-    description: 'Front-End Developer With JavaScript program, completed with a certificate.',
-    checklist: ['JavaScript', 'React', 'Angular', 'Node.js / Express', 'MongoDB'],
+    description: 'Front-End Developer with JavaScript program, completed with a diploma.',
+    checklist: ['JavaScript fundamentals & advanced', 'JS Applications & Back-End', 'Angular', 'ReactJS', 'HTML & CSS'],
     link: 'https://softuni.bg/certificates/details/246809/30023660',
   },
   {

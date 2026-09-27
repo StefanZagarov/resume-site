@@ -1,3 +1,4 @@
+import { Download } from 'lucide-react'
 import { Section } from '../components/Section'
 import { about, profile } from '../data/content'
 
@@ -5,26 +6,20 @@ export function About() {
   return (
     <Section id="about" title="About Me" subtitle="learn more about me">
       <div className="about">
-        <div className="terminal window">
-          <p className="term-line">
-            <span className="accent">❯</span> cat about.md
-          </p>
-          {about.text.map((paragraph) => (
-            <p key={paragraph} className="term-text">
-              {paragraph}
+        <div className="about-main">
+          <div className="terminal window">
+            <p className="term-line">
+              <span className="accent">❯</span> cat about.md
             </p>
-          ))}
-          <p className="term-line">
-            <span className="accent">❯</span>{' '}
-            <a href={profile.cv} download className="term-cmd">
-              open cv.pdf
-            </a>
-            <span className="term-hint">← click to download</span>
-          </p>
-          <p className="term-line">
-            <span className="accent">❯</span>
-            <span className="caret" aria-hidden="true" />
-          </p>
+            {about.text.map((paragraph) => (
+              <p key={paragraph} className="term-text">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+          <a href={profile.cv} download className="btn btn-primary">
+            Download CV <Download size={15} />
+          </a>
         </div>
 
         <div className="about-photo">

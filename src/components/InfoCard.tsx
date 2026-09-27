@@ -9,14 +9,13 @@ type InfoCardProps = {
   description: string
   checklist?: string[]
   actions?: ReactNode
-  highlighted: boolean
 }
 
 // Card used by the Projects and Experience carousels: title, optional media,
 // description, a checklist and action buttons
-export function InfoCard({ title, meta, media, description, checklist, actions, highlighted }: InfoCardProps) {
+export function InfoCard({ title, meta, media, description, checklist, actions }: InfoCardProps) {
   return (
-    <Tile className={highlighted ? 'info-card highlighted' : 'info-card'}>
+    <Tile className="info-card">
       <h3>{title}</h3>
       {meta && <p className="info-meta">{meta}</p>}
       {media}

@@ -5,7 +5,7 @@ export function TechIcon({ skill, size = 40 }: { skill: Skill; size?: number }) 
   return (
     <img
       className={skill.darkInvert ? 'tech-icon dark-invert' : 'tech-icon'}
-      src={`/icons/${skill.icon}.svg`}
+      src={`/icons/${skill.icon}`}
       width={size}
       height={size}
       alt=""

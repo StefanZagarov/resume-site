@@ -69,6 +69,9 @@ html {
 }
 
 body {
+  /* Safety net: nothing may widen the page sideways (on mobile that lets the page pan and
+     slide the sticky bar off-screen). clip, unlike hidden, keeps position: sticky working */
+  overflow-x: clip;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font);
@@ -305,15 +308,19 @@ kbd {
   position: sticky;
   top: 12px;
   z-index: 10;
-  max-width: var(--page);
+  /* A little wider than the page, so the full prompt and centred workspaces both fit */
+  max-width: 1280px;
   margin: 12px auto 0;
 }
 
 .nav {
   position: relative;
-  display: flex;
+  /* Prompt | workspaces | icons. Both side columns share the spare space equally, so the
+     workspaces sit in the centre. The prompt reserves room for its longest path (see .prompt),
+     so nothing shifts when the path changes, and the icons never shrink */
+  display: grid;
+  grid-template-columns: minmax(auto, 1fr) minmax(0, max-content) minmax(auto, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
   padding: 8px 12px;
   background: var(--tile);
@@ -326,7 +333,10 @@ kbd {
 .prompt {
   display: flex;
   align-items: center;
-  flex-shrink: 0;
+  justify-self: start;
+  max-width: 100%;
+  /* Longest prompt: "stefan@portfolio:~/certificates ❯" = 33 monospace chars + caret + padding */
+  min-width: calc(33ch + 31px);
   padding: 6px 10px;
   border-radius: 999px;
   font-family: var(--mono);
@@ -340,9 +350,20 @@ kbd {
   background: rgba(var(--accent-rgb), 0.1);
 }
 
+.prompt-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .prompt-user {
   color: var(--accent);
   font-weight: 600;
+}
+
+.prompt-at {
+  color: var(--fg);
+  font-weight: 400;
 }
 
 .prompt-path {
@@ -357,13 +378,17 @@ kbd {
 
 .nav-links {
   display: flex;
+  min-width: 0;
   gap: 2px;
   list-style: none;
 }
 
 .nav-links a {
-  display: block;
-  padding: 6px 12px;
+  /* A flex row can't wrap, so the expanding label never drops to a second line */
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
+  padding: 6px 10px;
   border-radius: 999px;
   font-size: 14px;
   color: var(--muted);
@@ -383,8 +408,17 @@ kbd {
 .ws-num {
   font-family: var(--mono);
   font-size: 11px;
-  margin-right: 6px;
   opacity: 0.55;
+}
+
+.ws-label {
+  display: inline-block;
+  vertical-align: bottom;
+  max-width: 140px;
+  margin-left: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.4s var(--hypr-ease), margin 0.4s var(--hypr-ease), opacity 0.2s;
 }
 
 .nav-links a.active .ws-num {
@@ -392,6 +426,7 @@ kbd {
 }
 
 .nav-actions {
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -402,10 +437,6 @@ kbd {
   font-size: 13px;
   color: var(--muted);
   margin-right: 4px;
-}
-
-.menu-btn {
-  display: none;
 }
 
 /* ==========================================================================
@@ -661,29 +692,18 @@ kbd {
 }
 
 .term-text {
-  color: var(--muted);
+  color: var(--fg);
   line-height: 1.75;
 }
 
-.term-cmd {
-  color: var(--fg);
-  text-decoration: underline dotted var(--accent);
-  text-underline-offset: 4px;
+.about-main {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
 }
 
-.term-cmd:hover {
-  color: var(--accent);
-}
-
-.term-hint {
-  margin-left: 12px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.terminal .caret {
-  width: 8px;
-  height: 16px;
+.about-main .terminal {
+  width: 100%;
 }
 
 .about-photo {
@@ -816,10 +836,6 @@ kbd {
   gap: 12px;
 }
 
-.info-card.highlighted {
-  border-color: rgba(var(--accent-rgb), 0.55);
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.15), 0 18px 50px -20px rgba(var(--accent-rgb), 0.35);
-}
 
 .info-meta {
   font-family: var(--mono);
@@ -895,78 +911,112 @@ kbd {
 /* ---------- Certificates ---------- */
 .cert-grid {
   list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--gap);
 }
 
 .cert {
-  width: 270px;
+  /* Opaque like the skill tiles: 11 frosted cards over the canvas would be expensive */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: var(--tile-solid);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 6px;
+  gap: 4px;
+  padding: 14px;
 }
 
 .cert-media {
-  width: 100%;
-  aspect-ratio: 4 / 3;
+  display: block;
   margin-bottom: 10px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-  background: radial-gradient(circle at 50% 40%, rgba(var(--accent-rgb), 0.16), transparent 60%), var(--tile-solid);
+  border-radius: 8px;
   overflow: hidden;
+  border: 1px solid var(--line);
+  aspect-ratio: 560 / 806;
 }
 
 .cert-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s var(--hypr-ease);
 }
 
-.cert h3 {
-  font-size: 17px;
+.cert:hover .cert-media img {
+  transform: scale(1.04);
 }
 
-.cert-link {
-  margin-top: 6px;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 14px;
+.cert-kind {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.cert.diploma .cert-kind {
   color: var(--accent);
 }
 
-/* ---------- Contact ---------- */
-.contact-intro {
-  max-width: 62ch;
-  margin: 0 auto 44px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 17px;
+.cert h3 {
+  font-size: 15.5px;
 }
 
+/* The diploma stands out with an accent border and a soft glow */
+.cert.diploma {
+  border-color: rgba(var(--accent-rgb), 0.45);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.12), 0 18px 50px -24px rgba(var(--accent-rgb), 0.45);
+}
+
+
+.cert-link {
+  margin-top: auto;
+  padding-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 13.5px;
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .cert-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Contact ---------- */
 .contact-info {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 28px 52px;
+  gap: 36px 64px;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+}
+
+.contact-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--tile);
 }
 
 .contact-item > div {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 20px;
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .contact-item a:hover {
@@ -977,7 +1027,7 @@ kbd {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   color: var(--muted);
 }
@@ -985,11 +1035,11 @@ kbd {
 .mini-btn {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 1px 7px;
+  gap: 4px;
+  padding: 2px 9px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 
@@ -1008,8 +1058,8 @@ kbd {
 .social {
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 42px;
+  width: 76px;
+  height: 50px;
   border-radius: 999px;
   background: var(--accent);
   color: var(--accent-ink);
@@ -1069,36 +1119,40 @@ kbd {
   }
 }
 
-@media (max-width: 1240px) {
+@media (max-width: 1400px) {
   .prompt-host {
     display: none;
   }
+
+  /* "stefan:~/certificates ❯" = 23 chars */
+  .prompt {
+    min-width: calc(23ch + 31px);
+  }
 }
 
-@media (max-width: 1000px) {
-  .menu-btn {
-    display: grid;
-  }
-
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    min-width: 200px;
-    flex-direction: column;
-    padding: 8px;
-    background: var(--tile-solid);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
+@media (max-width: 1200px) {
+  /* Workspaces collapse to numbers; only the active one keeps its name */
   .nav-links a {
-    padding: 10px 14px;
+    padding: 6px 9px;
+  }
+
+  .nav-links a:not(.active) .ws-label {
+    max-width: 0;
+    margin-left: 0;
+    opacity: 0;
+  }
+
+  .nav-links .ws-num {
+    font-size: 12px;
+  }
+
+  .nav-links a:not(.active) .ws-num {
+    opacity: 0.85;
+  }
+
+  /* The strip has a reserved width (see useReservedWidth); keep the numbers anchored left in it */
+  .nav-links {
+    justify-content: flex-start;
   }
 
   .about {
@@ -1113,6 +1167,53 @@ kbd {
 }
 
 @media (max-width: 600px) {
+  /* Tight on phones: the prompt keeps just ❯ (still opens the console) */
+  .prompt-text {
+    display: none;
+  }
+
+  .prompt .caret {
+    display: none;
+  }
+
+  /* The ❯ is the console button: it must never be squeezed out */
+  .prompt {
+    min-width: 34px;
+    padding: 6px 8px;
+  }
+
+  .nav {
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .nav-actions {
+    gap: 4px;
+  }
+
+  /* Workspaces may give up space (the active name ends in …) before the icons ever move */
+  .nav-links {
+    gap: 0;
+  }
+
+  .nav-links li {
+    min-width: 0;
+  }
+
+  .nav-links a {
+    padding: 6px 6px;
+    font-size: 13px;
+  }
+
+  .nav-links a.active {
+    min-width: 0;
+  }
+
+  .ws-label {
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
   .topbar {
     margin: 8px 12px 0;
     top: 8px;
@@ -1137,7 +1238,24 @@ kbd {
     flex-direction: column;
     align-items: flex-start;
     width: fit-content;
+    max-width: 100%;
     margin: 0 auto;
+    gap: 24px;
+  }
+
+  .contact-item {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .contact-item > div {
+    font-size: 17px;
+  }
+
+  .contact-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
   }
 }
 
@@ -1151,5 +1269,82 @@ kbd {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ---------- Vertical slider (projects) ---------- */
+.vslider {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+}
+
+.vslider.single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.vslider-viewport {
+  /* One line of cards tall; only the rail moves between lines (no wheel capture) */
+  height: var(--row-h);
+  overflow: hidden;
+  margin: -8px -4px;
+  border-radius: var(--radius);
+}
+
+.vslider-row {
+  display: grid;
+  gap: var(--gap);
+  min-height: var(--row-h);
+  padding: 8px 4px;
+}
+
+.vslider-card {
+  display: flex;
+}
+
+.vslider-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.vslider-dots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: height 0.35s var(--hypr-ease), background-color 0.2s;
+}
+
+.dot:hover {
+  background: var(--muted);
+}
+
+.dot.active {
+  height: 28px;
+  background: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .vslider {
+    gap: 10px;
+  }
+
+  .vslider-rail {
+    gap: 12px;
+  }
+
+  .vslider-rail .round-btn {
+    width: 36px;
+    height: 36px;
   }
 }

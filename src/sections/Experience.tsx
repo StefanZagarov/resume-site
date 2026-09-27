@@ -20,9 +20,8 @@ export function Experience() {
         key={tab}
         items={items}
         getKey={(item) => item.title}
-        renderItem={(item, highlighted) => (
+        renderItem={(item) => (
           <InfoCard
-            highlighted={highlighted}
             title={item.title}
             meta={
               <>

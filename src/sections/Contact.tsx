@@ -1,17 +1,11 @@
-import { Check, Copy, Eye, EyeOff, Mail, MapPin, Phone, User } from 'lucide-react'
+import { Check, Copy, Mail, MapPin, Phone, User } from 'lucide-react'
 import { useState } from 'react'
 import { GithubIcon } from '../components/GithubIcon'
 import { Section } from '../components/Section'
 import { profile } from '../data/content'
 import { copyText } from '../utils/copyText'
 
-// Keeps only the country code visible until the visitor reveals the number
-function maskPhone(phone: string) {
-  return phone.replace(/(\+\d{3})(.*)/, (_, code: string, rest: string) => code + rest.replace(/\d/g, '*'))
-}
-
 export function Contact() {
-  const [showPhone, setShowPhone] = useState(false)
   const [copied, setCopied] = useState(false)
 
   const copyEmail = async () => {
@@ -26,49 +20,43 @@ export function Contact() {
 
   return (
     <Section id="contact" title="Contact Me" subtitle="get in touch">
-      <p className="contact-intro">
-        Feel free to get in touch with me. I'm always open to discussing new projects, ideas or opportunities to be
-        part of your team. Email or call me with any questions.
-      </p>
-
       <div className="contact-info">
         <div className="contact-item">
-          <User size={22} className="accent" />
+          <span className="contact-icon">
+            <User size={26} className="accent" />
+          </span>
           <div>
             <span className="contact-label">Name</span>
             <span>{profile.name}</span>
           </div>
         </div>
         <div className="contact-item">
-          <MapPin size={22} className="accent" />
+          <span className="contact-icon">
+            <MapPin size={26} className="accent" />
+          </span>
           <div>
             <span className="contact-label">Location</span>
             <span>{profile.location}</span>
           </div>
         </div>
         <div className="contact-item">
-          <Phone size={22} className="accent" />
+          <span className="contact-icon">
+            <Phone size={26} className="accent" />
+          </span>
           <div>
-            <span className="contact-label">
-              Phone
-              <button type="button" className="mini-btn" onClick={() => setShowPhone((v) => !v)}>
-                {showPhone ? <EyeOff size={12} /> : <Eye size={12} />} {showPhone ? 'hide' : 'show'}
-              </button>
-            </span>
-            {showPhone ? (
-              <a href={`tel:${profile.phone.replace(/\s/g, '')}`}>{profile.phone}</a>
-            ) : (
-              <span>{maskPhone(profile.phone)}</span>
-            )}
+            <span className="contact-label">Phone</span>
+            <a href={`tel:${profile.phone.replace(/\s/g, '')}`}>{profile.phone}</a>
           </div>
         </div>
         <div className="contact-item">
-          <Mail size={22} className="accent" />
+          <span className="contact-icon">
+            <Mail size={26} className="accent" />
+          </span>
           <div>
             <span className="contact-label">
               E-mail
               <button type="button" className="mini-btn" onClick={copyEmail}>
-                {copied ? <Check size={12} /> : <Copy size={12} />} {copied ? 'copied' : 'copy'}
+                {copied ? <Check size={13} /> : <Copy size={13} />} {copied ? 'copied' : 'copy'}
               </button>
             </span>
             <a href={`mailto:${profile.email}`}>{profile.email}</a>
@@ -78,10 +66,10 @@ export function Contact() {
 
       <div className="socials">
         <a href={profile.github} target="_blank" rel="noreferrer" className="social" aria-label="GitHub">
-          <GithubIcon size={20} />
+          <GithubIcon size={22} />
         </a>
         <a href={`mailto:${profile.email}`} className="social" aria-label="Email">
-          <Mail size={20} />
+          <Mail size={22} />
         </a>
       </div>
     </Section>
