@@ -1,6 +1,7 @@
 import { Check, Copy, Mail, MapPin, Phone, User } from 'lucide-react'
 import { useRef, useState, type CSSProperties } from 'react'
 import { GithubIcon } from '../components/GithubIcon'
+import { LinkedinIcon } from '../components/LinkedinIcon'
 import { Section } from '../components/Section'
 import { profile } from '../data/content'
 import { copyText } from '../utils/copyText'
@@ -69,6 +70,9 @@ export function Contact() {
       <div className="socials reveal" style={{ '--i': 4 } as CSSProperties}>
         <a href={profile.github} target="_blank" rel="noreferrer" className="social" aria-label="GitHub">
           <GithubIcon size={22} />
+        </a>
+        <a href={profile.linkedin} target="_blank" rel="noreferrer" className="social" aria-label="LinkedIn">
+          <LinkedinIcon size={22} />
         </a>
         <a href={`mailto:${profile.email}`} className="social" aria-label="Email">
           <Mail size={22} />

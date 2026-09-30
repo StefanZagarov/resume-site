@@ -45,6 +45,10 @@ export function Console({ open, onClose, onToggleTheme }: ConsoleProps) {
             <span>open github</span>
             <span>new tab</span>
           </a>
+          <a className="cmd" href={profile.linkedin} target="_blank" rel="noreferrer">
+            <span>open linkedin</span>
+            <span>new tab</span>
+          </a>
           <button type="button" className="cmd" onClick={onToggleTheme}>
             <span>theme --toggle</span>
             <span>light / dark</span>
